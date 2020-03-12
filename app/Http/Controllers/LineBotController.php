@@ -26,5 +26,9 @@ class LineBotController extends Controller
         if (!$lineBot->validateSignature($request->getContent(), $signature)) {
             abort(400, 'Invalid signature');
         }
+
+        $events = $lineBot->parseEventRequest($request->getContent(), $signature);
+
+        Log::debug($events);
     }
 }
