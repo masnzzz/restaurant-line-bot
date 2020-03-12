@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Services\Gurunavi;
+use App\Services\RestaurantBubbleBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use LINE\LINEBot;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+use LINE\LINEBot\MessageBuilder\FlexMessageBuilder;
+use LINE\LINEBot\MessageBuilder\Flex\ContainerBuilder\CarouselContainerBuilder;
 
 class LineBotController extends Controller
 {
@@ -49,16 +52,21 @@ class LineBotController extends Controller
                 continue;
             }
 
-            $replyText = '';
+            $bubbles = [];
             foreach ($gurunaviResponse['rest'] as $restaurant) {
-                $replyText .=
-                    $restaurant['name'] . "\n" .
-                    $restaurant['url'] . "\n" .
-                    "\n";
+                $bubble = restaurantBubbleBuilder::builder();
+                $bubble->setContents($restaurant);
+                $bubbles[] = $bubble;
             }
 
-            $replyToken = $event->getReplyToken();
-            $lineBot->replyText($replyToken, $replyText);
+            $carousel = CarouselContainerBuilder::builder();
+            $carousel->setContents($bubbles);
+
+            $flex = FlexMessageBuilder::builder();
+            $flex->setAltText('飲食店検索結果');
+            $flex->setContents($carousel);
+
+            $lineBot->replyMessage($event->getReplyToken(), $flex);
         }
     }
 }
