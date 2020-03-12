@@ -7,14 +7,14 @@ use GuzzleHttp\Client;
 class Gurunavi
 {
     /**
-     * グルナビAPI ARL
+     * ぐるなびAPI URL
      */
     private const RESTAURANTS_SEARCH_API_URL = 'https://api.gnavi.co.jp/RestSearchAPI/v3/';
 
     /**
      * 飲食店検索
      * @param  string $word 検索ワード
-     * @return array
+     * @return array  JSON形式のHTTPレスポンスボディ
      */
     public function searchRestaurants(string $word): array
     {
