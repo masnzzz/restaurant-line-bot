@@ -13,6 +13,8 @@ class RestaurantBubbleBuilder implements ContainerBuilder
     private $minutesByFoot;
     private $category;
     private $budget;
+    private $opentime;
+    private $holiday;
     private $latitude;
     private $longitude;
     private $phoneNumber;
@@ -131,6 +133,52 @@ class RestaurantBubbleBuilder implements ContainerBuilder
                                         'flex' => 12
                                     ]
                                 ]
+                            ],
+                            [
+                                "type" => "box",
+                                "layout" => "baseline",
+                                "spacing" => "sm",
+                                "contents" => [
+                                    [
+                                        'type' => 'text',
+                                        'text' => '営業時間',
+                                        'wrap' => true,
+                                        'color' => '#aaaaaa',
+                                        'size' => 'sm',
+                                        'flex' => 4
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $this->opentime,
+                                        'wrap' => true,
+                                        'color' => '#666666',
+                                        'size' => 'xs',
+                                        'flex' => 12
+                                    ]
+                                ]
+                            ],
+                            [
+                                "type" => "box",
+                                "layout" => "baseline",
+                                "spacing" => "sm",
+                                "contents" => [
+                                    [
+                                        'type' => 'text',
+                                        'text' => '休業日',
+                                        'wrap' => true,
+                                        'color' => '#aaaaaa',
+                                        'size' => 'sm',
+                                        'flex' => 4
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $this->holiday,
+                                        'wrap' => true,
+                                        'color' => '#666666',
+                                        'size' => 'xs',
+                                        'flex' => 12
+                                    ]
+                                ]
                             ]
                         ]
                     ]
@@ -149,16 +197,6 @@ class RestaurantBubbleBuilder implements ContainerBuilder
                             'type' => 'uri',
                             'label' => '地図を見る',
                             'uri' => self::GOOGLE_MAP_URL . '?q=' . $this->latitude . ',' . $this->longitude,
-                        ]
-                    ],
-                    [
-                        'type' => 'button',
-                        'style' => 'link',
-                        'height' => 'sm',
-                        'action' => [
-                            'type' => 'uri',
-                            'label' => '電話する',
-                            'uri' => 'tel:' . $this->phoneNumber,
                         ]
                     ],
                     [
@@ -201,6 +239,8 @@ class RestaurantBubbleBuilder implements ContainerBuilder
         $this->minutesByFoot  = Arr::get($restaurant, 'access.walk', null);
         $this->category       = Arr::get($restaurant, 'category', null);
         $this->budget         = Arr::get($restaurant, 'budget', null);
+        $this->opentime       = Arr::get($restaurant, 'opentime', null);
+        $this->holiday        = Arr::get($restaurant, 'holiday', null);
         $this->latitude       = Arr::get($restaurant, 'latitude', null);
         $this->longitude      = Arr::get($restaurant, 'longitude', null);
         $this->phoneNumber    = Arr::get($restaurant, 'tel', null);
